@@ -47,7 +47,7 @@ width: 100%;
 text-align: center;
 `
 
-const Form = ({setResume}) => {
+const Form = ({setResume, setLoad}) => {
 
   const [data,setDate] = useState({
     brand:'',
@@ -80,12 +80,16 @@ const Form = ({setResume}) => {
     result -= ( ( diffe * 3 ) * result ) / 100
     result = calcMarca(brand) * result
     result = parseFloat( searchPlan(plan) * result ).toFixed()
-    
-    setResume({
-      total: result,
-      data
-    })
-    
+
+    setLoad(true)
+
+    setTimeout(() => {
+      setLoad(false)
+      setResume({
+        total: result,
+        data
+      })
+    }, 2000);  
   }
 
 
@@ -154,5 +158,8 @@ const Form = ({setResume}) => {
   )
 }
 
-
+Form.propTypes = {
+  setLoad: PropTypes.func.isRequired,
+  setResume: PropTypes.func.isRequired
+}
 export default Form

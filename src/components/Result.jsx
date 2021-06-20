@@ -1,28 +1,59 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from "@emotion/styled"
-import { lettersMayus } from "../helpers/helper"
+import { TransitionGroup, CSSTransition } from "react-transition-group"
 
-const Container = styled.div`
+const Msg = styled.p`
+  background-color: rgb(127, 224, 237);
+  margin-top:2rem;
   padding: 1rem;
   text-align: center;
-  background-color: #00838f;
-  color:#fff;
+`;
+
+const DivResult = styled.div`
+  text-align: center;
+  padding: .5rem;
+  border:1px solid #26C6DA;
+  background-color: rgb(127,224,237);
   margin-top: 1rem;
 `
 
-const Result = ({ brand, year, plan }) => {
+const Total = styled.p`
+  color:#00838F;
+  padding: 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 0;
+`
 
-  if(brand.trim()==='' || year.trim()==='' || plan.trim==='') return null
+const Result = ({total}) => {
   return (
-    <Container>
-      <h2>Resultado de la cotizacion</h2>
-      <ul>
-        <li>Marca: {lettersMayus(brand)}</li>
-        <li>Year: {lettersMayus(year)}</li>
-        <li>Plan: {lettersMayus(plan)}</li>
-      </ul>
-    </Container>
+    (total === 0) ? 
+      <Msg>Eligue marca, año y tipo de seguro</Msg> 
+    : (
+        <TransitionGroup
+        //Compònente que quieres animar
+          component='p'
+          className='resultado'        
+        >
+          <CSSTransition
+            classNames='resultado'
+            //ket puede sr la info
+            key={total}
+            // Tiempo de que entra y que sale
+            timeout={{enter:500, exit:500}}
+          >
+            <DivResult>
+              <Total>El total es: $ {total}</Total>
+            </DivResult>    
+          </CSSTransition>
+        </TransitionGroup>
+      )
   )
+}
+
+Result.propTypes = {
+  total: PropTypes.number
 }
 
 export default Result

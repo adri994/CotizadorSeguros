@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import styled from "@emotion/styled"
 import Header from './components/Header'
 import Form from './components/Form'
-import Result from './components/Result'
+import Resum from './components/Resum'
+import Result from  './components/Result'
+import Spinner from './components/Spinner'
+
 
 const Container = styled.div`
 max-width: 600px;
@@ -23,7 +26,9 @@ const App = () => {
     }
   })
 
-  const { data } =resume
+  const [ load, setLoad ] = useState(false)
+
+  const { data, total } =resume
 
   return (
     <Container>
@@ -33,10 +38,21 @@ const App = () => {
       <FormContainer>
         <Form 
           setResume = {setResume}
+          setLoad = { setLoad }
         />
-        <Result 
+        { load ? <Spinner /> : null }
+        
+        <Resum 
           {...data}
         />
+        { 
+          !load ? 
+            <Result 
+              total= {total}
+            />
+            : null
+        }
+
       </FormContainer>
     </Container>
 
